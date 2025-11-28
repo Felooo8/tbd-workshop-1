@@ -60,8 +60,30 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
    For all the resources of type: `google_artifact_registry`, `google_storage_bucket`, `google_service_networking_connection`
    create a sample usage profiles and add it to the Infracost task in CI/CD pipeline. Usage file [example](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml)
 
-**_place the expected consumption you entered here_**
-**_place the screenshot from infracost output here_**
+```bash
+version: 0.1
+resource_type_default_usage:
+  google_artifact_registry_repository:
+    storage_gb: 150
+    monthly_egress_data_transfer_gb:
+      europe_west1: 50
+
+  google_storage_bucket:
+    storage_gb: 192
+    monthly_class_a_operations: 100000
+    monthly_class_b_operations: 500000
+    monthly_data_retrieval_gb: 250
+    monthly_egress_data_transfer_gb:
+      same_continent: 100
+      worldwide: 50
+
+  google_service_networking_connection:
+    monthly_egress_data_transfer_gb:
+      same_region: 10
+      europe: 5
+```
+
+![img.png](doc/figures/infracost.png)
 
 9. Create a BigQuery dataset and an external table using SQL
 
