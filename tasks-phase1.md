@@ -61,7 +61,6 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
    create a sample usage profiles and add it to the Infracost task in CI/CD pipeline. Usage file [example](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml)
 
 **_place the expected consumption you entered here_**
-
 **_place the screenshot from infracost output here_**
 
 9. Create a BigQuery dataset and an external table using SQL
