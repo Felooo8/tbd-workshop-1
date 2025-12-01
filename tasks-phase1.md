@@ -54,8 +54,8 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
    1. Description of the components of service accounts
    2. List of buckets for disposal
 
-   ![img.png](doc/figures/diagram.png)
 
+   ![img.png](doc/figures/diagram.jpg)\
 8. Create a new PR and add costs by entering the expected consumption into Infracost
    For all the resources of type: `google_artifact_registry`, `google_storage_bucket`, `google_service_networking_connection`
    create a sample usage profiles and add it to the Infracost task in CI/CD pipeline. Usage file [example](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml)
@@ -87,17 +87,75 @@ resource_type_default_usage:
 
 9. Create a BigQuery dataset and an external table using SQL
 
-**_place the code and output here_**
+   **_place the code and output here_**
 
-**_why does ORC not require a table schema?_**
+   Plik ORC został pobrany ze strony: https://www.filesampleshub.com/format/code/orc
+
+   Utworzyliśmy nowy bucket w Cloud Storage w terminalu za pomocą polecenia:
+
+   ```cmd
+   gcloud storage buckets create gs://tbd-25z-3237333-data \
+   --location=europe-west1 \
+   --uniform-bucket-level-access
+   ```
+
+   Utworzyliśmy nowy BigQuery dataset przy użyciu następującego zapytania SQL:
+
+   ```sql
+   CREATE SCHEMA IF NOT EXISTS `tbd-25z-3237333.workshop1_ds`
+   OPTIONS(
+   location = 'europe-west1'
+   );
+   ```
+
+   Utworzyliśmy zewnętrzną tabelę z plików ORC przy użyciu następującego zapytania SQL:
+
+   ```sql
+   CREATE OR REPLACE EXTERNAL TABLE `tbd-25z-3237333.workshop1_ds.orc_table`
+   OPTIONS (
+   format = 'ORC',
+   uris = ['gs://tbd-25z-3237333-data/sample2/*.orc']
+   );
+   ```
+
+   Przykładowe zapytanie z nowej tabeli:
+
+   ![img.png](doc/figures/sample_query.jpg)
+
+   **_why does ORC not require a table schema?_**
+
+   Format ORC przechowuje informacje o schemacie danych wewnętrznie, dzięki czemu BigQuery może automatycznie rozpoznać strukturę tabeli bez konieczności ręcznego podawania nazw kolumn i typów danych.
+   Ułatwia to importowanie danych ORC, ponieważ definicje schematu są już zawarte w metadanych pliku.
 
 10. Find and correct the error in spark-job.py
 
-**_describe the cause and how to find the error_**
+   **_describe the cause and how to find the error_**
+
+   a. Zaczęliśmy od skopiowania spark-job do  naszego bucket'a i wywołania joba z poziomu terminala, po czym otrzymaliśmy błąd o nieisniejącym bucketcie:
+
+   ![img.png](doc/figures/step_1_pyspark.jpg)
+
+   b. Poprawiliśmy DATA_BUCKET zmieniając tbd-2025z-9901-data na tbd-25z-3237333-data i ponownie ztriggerowaliśmy job, tym razem z sukcesem:
+
+   ![img.png](doc/figures/step_2_pyspark.jpg)
 
 11. Add support for preemptible/spot instances in a Dataproc cluster
 
-**_place the link to the modified file and inserted terraform code_**
+   **_place the link to the modified file and inserted terraform code_**
+
+   Zmodyfikowany plik Terraform (konfiguracja klastra Dataproc):
+
+   [main.tf](modules/dataproc/main.tf)
+
+   Do zasobu `google_dataproc_cluster "tbd-dataproc-cluster"` dodałem konfigurację preemptible workerów:
+
+   ```hcl
+      secondary_worker_config {
+         num_instances  = 2
+         preemptibility = "PREEMPTIBLE"
+      }
+   ```
+
 
 12. Triggered Terraform Destroy on Schedule or After PR Merge. Goal: make sure we never forget to clean up resources and burn money.
 
@@ -113,9 +171,9 @@ b) when a PR is merged to main containing [CLEANUP] tag in title
 Steps:
 
 1. Create file .github/workflows/auto-destroy.yml
-2. Configure it to authenticate and destroy Terraform resources
-3. Test the trigger (schedule or cleanup-tagged PR)
 
+2. Configure it to authenticate and destroy Terraform resources
+3. Test the trigger (schedule or cleanup-tagged PR)\
 **_paste workflow YAML here_**
 
 **_paste screenshot/log snippet confirming the auto-destroy ran_**
