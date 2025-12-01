@@ -55,7 +55,7 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
    2. List of buckets for disposal
 
    ![img.png](doc/figures/diagram.jpg)
-   
+
 8. Create a new PR and add costs by entering the expected consumption into Infracost
    For all the resources of type: `google_artifact_registry`, `google_storage_bucket`, `google_service_networking_connection`
    create a sample usage profiles and add it to the Infracost task in CI/CD pipeline. Usage file [example](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml)
@@ -156,29 +156,82 @@ resource_type_default_usage:
       }
    ```
 
+   ![img.png](doc/figures/task_11.jpg)
+
 
 12. Triggered Terraform Destroy on Schedule or After PR Merge. Goal: make sure we never forget to clean up resources and burn money.
 
-Add a new GitHub Actions workflow that:
+   Add a new GitHub Actions workflow that:
 
-1. runs terraform destroy -auto-approve
-2. triggers automatically:
+   1. runs terraform destroy -auto-approve
+   2. triggers automatically:
 
-a) on a fixed schedule (e.g. every day at 20:00 UTC)
+   a) on a fixed schedule (e.g. every day at 20:00 UTC)
 
-b) when a PR is merged to main containing [CLEANUP] tag in title
+   b) when a PR is merged to main containing [CLEANUP] tag in title
 
-Steps:
+   Steps:
 
-1. Create file .github/workflows/auto-destroy.yml
+   1. Create file .github/workflows/auto-destroy.yml
 
-2. Configure it to authenticate and destroy Terraform resources
-3. Test the trigger (schedule or cleanup-tagged PR)\
-**_paste workflow YAML here_**
+   2. Configure it to authenticate and destroy Terraform resources
+   3. Test the trigger (schedule or cleanup-tagged PR)\
+   **_paste workflow YAML here_**
 
-**_paste screenshot/log snippet confirming the auto-destroy ran_**
+   [auto-destroy.yml](.github/workflows/auto-destroy.yml)
+   ```yaml
+   name: Auto Terraform Destroy
 
-**_write one sentence why scheduling cleanup helps in this workshop_**
+   on:
+   schedule:
+      - cron: '15 0 * * *'
+   pull_request:
+      types: [closed]
+      branches:
+         - main
+
+   jobs:
+   terraform-destroy:
+      if: >
+         github.event_name == 'schedule' ||
+         (github.event_name == 'pull_request' &&
+         github.event.action == 'closed' &&
+         github.event.pull_request.merged == true &&
+         contains(github.event.pull_request.title, '[CLEANUP]'))
+      runs-on: ubuntu-latest
+
+      permissions:
+         id-token: write
+         contents: read
+
+      steps:
+         - name: Checkout repository
+         uses: actions/checkout@v4
+
+         - name: Authenticate to Google Cloud (Workload Identity Federation)
+         uses: google-github-actions/auth@v1
+         with:
+            workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_NAME }}
+            service_account: ${{ secrets.GCP_WORKLOAD_IDENTITY_SA_EMAIL }}
+
+         - name: Set up gcloud SDK
+         uses: google-github-actions/setup-gcloud@v2
+
+         - name: Set up Terraform
+         uses: hashicorp/setup-terraform@v3
+         with:
+            terraform_version: 1.11.0
+
+         - name: Terraform init
+         run: terraform init -backend-config=env/backend.tfvars
+
+         - name: Terraform destroy
+         run: terraform destroy -no-color -auto-approve -var-file=env/project.tfvars
+   ```
+
+   **_paste screenshot/log snippet confirming the auto-destroy ran_**
+
+   **_write one sentence why scheduling cleanup helps in this workshop_**
 
 ```
 
