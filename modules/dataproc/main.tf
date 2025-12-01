@@ -133,10 +133,9 @@ resource "google_dataproc_cluster" "tbd-dataproc-cluster" {
         boot_disk_size_gb = 100
       }
 
-    secondary_worker_config {
-      num_instances  = 2
-      preemptibility = "PREEMPTIBLE"
-    }
+    preemptible_worker_config {
+      num_instances = 2
+      }
     }
   }
 }
