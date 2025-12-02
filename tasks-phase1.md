@@ -184,7 +184,7 @@ resource_type_default_usage:
 
    on:
    schedule:
-      - cron: '15 0 * * *'
+      - cron: '30 0 * * *'
    pull_request:
       types: [closed]
       branches:
@@ -233,6 +233,4 @@ resource_type_default_usage:
 
    **_write one sentence why scheduling cleanup helps in this workshop_**
 
-```
-
-```
+   Zaplanowane automatyczne terraform destroy pomaga w tym workshopie, bo gwarantuje posprzątanie wszystkich zasobów po ćwiczeniach i zapobiega przypadkowemu generowaniu kosztów w GCP po zakończeniu zajęć.
