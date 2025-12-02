@@ -4,9 +4,9 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 
 1. Authors:
 
-   **_8_**
+   **Grupa: _8_**
 
-   _[\_\_link to forked repo_](https://github.com/Felooo8/tbd-workshop-1/)\*\*
+   **[\_link to forked repo_](https://github.com/Felooo8/tbd-workshop-1/)**
 
 2. Follow all steps in README.md.
 
@@ -60,30 +60,30 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
    For all the resources of type: `google_artifact_registry`, `google_storage_bucket`, `google_service_networking_connection`
    create a sample usage profiles and add it to the Infracost task in CI/CD pipeline. Usage file [example](https://github.com/infracost/infracost/blob/master/infracost-usage-example.yml)
 
-```bash
-version: 0.1
-resource_type_default_usage:
-  google_artifact_registry_repository:
-    storage_gb: 150
-    monthly_egress_data_transfer_gb:
-      europe_west1: 50
+   ```bash
+   version: 0.1
+   resource_type_default_usage:
+   google_artifact_registry_repository:
+      storage_gb: 150
+      monthly_egress_data_transfer_gb:
+         europe_west1: 50
 
-  google_storage_bucket:
-    storage_gb: 192
-    monthly_class_a_operations: 100000
-    monthly_class_b_operations: 500000
-    monthly_data_retrieval_gb: 250
-    monthly_egress_data_transfer_gb:
-      same_continent: 100
-      worldwide: 50
+   google_storage_bucket:
+      storage_gb: 192
+      monthly_class_a_operations: 100000
+      monthly_class_b_operations: 500000
+      monthly_data_retrieval_gb: 250
+      monthly_egress_data_transfer_gb:
+         same_continent: 100
+         worldwide: 50
 
-  google_service_networking_connection:
-    monthly_egress_data_transfer_gb:
-      same_region: 10
-      europe: 5
-```
+   google_service_networking_connection:
+      monthly_egress_data_transfer_gb:
+         same_region: 10
+         europe: 5
+   ```
 
-![img.png](doc/figures/infracost.png)
+   ![img.png](doc/figures/infracost.png)
 
 9. Create a BigQuery dataset and an external table using SQL
 
@@ -147,7 +147,7 @@ resource_type_default_usage:
 
    [main.tf](modules/dataproc/main.tf)
 
-   Do zasobu `google_dataproc_cluster "tbd-dataproc-cluster"` dodałem konfigurację preemptible workerów:
+   Do zasobu `google_dataproc_cluster "tbd-dataproc-cluster"` dodaliśmy konfigurację preemptible workerów:
 
    ```hcl
       secondary_worker_config {
@@ -184,12 +184,14 @@ resource_type_default_usage:
 
    on:
    schedule:
-      - cron: '30 0 * * *'
+      - cron: '55 0 * * *'
    pull_request:
       types: [closed]
       branches:
          - main
+         - master
 
+   permissions: read-all
    jobs:
    terraform-destroy:
       if: >
@@ -230,6 +232,8 @@ resource_type_default_usage:
    ```
 
    **_paste screenshot/log snippet confirming the auto-destroy ran_**
+
+   ![img.png](doc/figures/auto_destroy.jpg)
 
    **_write one sentence why scheduling cleanup helps in this workshop_**
 
