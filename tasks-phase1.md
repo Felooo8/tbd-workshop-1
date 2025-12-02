@@ -233,7 +233,7 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 
    **_paste screenshot/log snippet confirming the auto-destroy ran_**
 
-   ![img.png](doc/figures/auto_destroy.jpg)
+   ![img.png](doc/figures/task_12.jpg)
 
    **_write one sentence why scheduling cleanup helps in this workshop_**
 
