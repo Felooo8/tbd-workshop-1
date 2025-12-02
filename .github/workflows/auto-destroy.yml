@@ -2,12 +2,13 @@ name: Auto Terraform Destroy
 
 on:
   schedule:
-    - cron: '30 0 * * *'
+    - cron: '35 0 * * *'
   pull_request:
     types: [closed]
     branches:
       - main
 
+permissions: read-all
 jobs:
   terraform-destroy:
     if: >
