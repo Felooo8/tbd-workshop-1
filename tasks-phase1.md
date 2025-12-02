@@ -237,4 +237,4 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 
    **_write one sentence why scheduling cleanup helps in this workshop_**
 
-   Zaplanowane automatyczne terraform destroy pomaga w tym workshopie, bo gwarantuje posprzątanie wszystkich zasobów po ćwiczeniach i zapobiega przypadkowemu generowaniu kosztów w GCP po zakończeniu zajęć.
+   Zaplanowane automatyczne terraform-destroy pomaga w tym workshopie, bo gwarantuje posprzątanie wszystkich zasobów po ćwiczeniach i zapobiega przypadkowemu generowaniu kosztów w GCP po zakończeniu zajęć.
