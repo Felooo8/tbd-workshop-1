@@ -184,7 +184,7 @@ IMPORTANT ❗ ❗ ❗ Please remember to destroy all the resources after each wo
 
    on:
    schedule:
-      - cron: '55 0 * * *'
+      - cron: '0 8 * * *'
    pull_request:
       types: [closed]
       branches:
