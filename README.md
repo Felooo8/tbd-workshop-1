@@ -138,7 +138,4 @@ terraform destroy -no-color -var-file env/project.tfvars
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | GCP region | `string` | `"europe-west1"` | no |
 
-## Outputs
-
-No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
