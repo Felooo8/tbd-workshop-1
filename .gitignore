@@ -39,3 +39,12 @@ terraform.rc
 bootstrap/terraform.tfstate_*
 bin/
 .venv/
+tbd-phase2/social_*
+tbd-phase2/*/task2/*/_SUCCESS
+tbd-phase2/code/old/*
+.gitignore
+tbd-phase2/code/count_rows.py
+tbd-phase2/code/repartition_to_gcs_partitioned.py
+tbd-phase2/code/repartition_to_gcs.py
+notebooks/social_media_data.parquet
+tbd-phase2/resultsold/task2/phase2_task2_w2/part-00000-98dc46cb-5a31-419c-9554-278ea84bc7a3-c000.csv

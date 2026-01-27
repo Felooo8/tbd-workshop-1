@@ -1,0 +1,4 @@
+run_tag,workers,query,time_min_s,time_mean_s,rows_out,partitions,master,app_id,aqe_enabled,shuffle_partitions
+w2,2,A,2.5593478679656982,2.824680280685425,49,24,yarn,application_1769375679560_0005,true,24
+w2,2,B,5.564557313919067,5.861957120895386,1510,24,yarn,application_1769375679560_0005,true,24
+w2,2,C,4.563643217086792,4.96334547996521,7,24,yarn,application_1769375679560_0005,true,24
